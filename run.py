@@ -32,16 +32,14 @@ def blurImage(path):
 		width, height = foreground.size
 		
 		new_width, _ = new_dimensions
-
 		x_offset = int((new_width - width) / 2)
-
 		im_blur.paste(foreground, (x_offset, 0))
 		
 		base_filename = os.path.basename(image_path)
-		template = Template('_processed_$base_filename.$ext')
-		filename = template.substitute(base_filename=base_filename, ext='jpg')
-		im_blur.save(os.path.join(path, filename), 'JPEG' )
+		template = Template('_processed_$base_filename')
+		filename = template.substitute(base_filename=base_filename)
 		#Saving the filtered image to a new file
+		im_blur.save(os.path.join(path, filename), 'JPEG' )
 
 if __name__ == '__main__':
 	args = parser.parse_args()
