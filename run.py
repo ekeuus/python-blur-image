@@ -6,6 +6,8 @@ from string import Template
 parser = argparse.ArgumentParser(description='Convert images to 16:9 aspect ratio with blurred sidebars')
 parser.add_argument('path', metavar='path', help='Directory where to load files from')
 
+fill_color = '#ffffff'  # your background
+
 def landscapeDimensions(size):
 	width, height = size
 	width = int(height * 16.0 / 9)
@@ -39,6 +41,12 @@ def blurImage(path):
 		template = Template('_processed_$base_filename')
 		filename = template.substitute(base_filename=base_filename)
 		#Saving the filtered image to a new file
+
+		if im_blur.mode in ('RGBA', 'LA'):
+			jpeg_blur = Image.new(im_blur.mode[:-1], im_blur.size, fill_color)
+			jpeg_blur.paste(im_blur, im_blur.split()[-1])
+			im_blur = jpeg_blur
+
 		im_blur.save(os.path.join(path, filename), 'JPEG' )
 
 if __name__ == '__main__':
